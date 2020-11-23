@@ -1,4 +1,4 @@
-# SpringBootStarterKit
+# Spring-Boot-Starter-Kit
 This repository holds the base template for spring boot starter app which can be used for api development and testing.
 Swagger is enabled for quick api testing with H2 database (which is saved to a file , so there is continuity in the development and testing)
 To use this starter kit follow below steps 
