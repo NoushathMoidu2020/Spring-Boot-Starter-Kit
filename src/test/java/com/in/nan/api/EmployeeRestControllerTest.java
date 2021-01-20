@@ -59,7 +59,7 @@ public class EmployeeRestControllerTest extends CommonTestConfigBeans {
         RestAssured.given().auth().none().
                 contentType(JSON).body(employee)
                 .log().all()
-                .expect().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).log().all()
+                .expect().statusCode(HttpStatus.NOT_FOUND.value()).log().all()
                 .when().put("/api/employees/{employeeId}/", employee.getId()).asString();
 
     }

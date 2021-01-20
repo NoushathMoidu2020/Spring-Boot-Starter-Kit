@@ -5,6 +5,7 @@ import com.in.nan.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,13 +46,15 @@ public class EmployeeRestController {
     }
 
     @PutMapping("/{employeeId}")
-    public void updateEmployee(@RequestBody Employee employee,
-                               @PathVariable(name = "employeeId") Long employeeId) {
+    public ResponseEntity<String> updateEmployee(@RequestBody Employee employee,
+                                                 @PathVariable(name = "employeeId") Long employeeId) {
         Employee emp = employeeService.getEmployee(employeeId);
         if (emp != null) {
             employeeService.updateEmployee(employee);
+            return new ResponseEntity<>("Employee updated successfully", HttpStatus.OK);
         }
 
+        return new ResponseEntity<>("Employee not found", HttpStatus.NOT_FOUND);
     }
 
 }

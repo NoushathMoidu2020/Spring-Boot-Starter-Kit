@@ -22,7 +22,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public Employee getEmployee(Long employeeId) {
         Optional<Employee> optEmp = employeeRepository.findById(employeeId);
-        return optEmp.get();
+        if (optEmp.isPresent())
+            return optEmp.get();
+        return null;
     }
 
     public Employee saveEmployee(Employee employee) {
