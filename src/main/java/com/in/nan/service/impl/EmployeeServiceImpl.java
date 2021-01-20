@@ -15,10 +15,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public void setEmployeeRepository(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
     public List<Employee> retrieveEmployees() {
         List<Employee> employees = employeeRepository.findAll();
         return employees;
@@ -29,8 +25,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return optEmp.get();
     }
 
-    public void saveEmployee(Employee employee){
-        employeeRepository.save(employee);
+    public Employee saveEmployee(Employee employee){
+        return employeeRepository.save(employee);
     }
 
     public void deleteEmployee(Long employeeId){

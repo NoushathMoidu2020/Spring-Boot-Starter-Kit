@@ -2,45 +2,49 @@ package com.in.nan.api;
 
 import com.in.nan.entity.Employee;
 import com.in.nan.service.EmployeeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/employees")
 public class EmployeeRestController {
-
+    public static final Logger LOGGER = LoggerFactory.getLogger(EmployeeRestController.class);
     @Autowired
     private EmployeeService employeeService;
 
-    public void setEmployeeService(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
-
-    @GetMapping("/api/employees")
+    @GetMapping("/")
     public List<Employee> getEmployees() {
         List<Employee> employees = employeeService.retrieveEmployees();
         return employees;
     }
 
-    @GetMapping("/api/employees/{employeeId}")
+    @GetMapping("/{employeeId}")
     public Employee getEmployee(@PathVariable(name="employeeId")Long employeeId) {
         return employeeService.getEmployee(employeeId);
     }
 
-    @PostMapping("/api/employees")
-    public void saveEmployee(Employee employee){
-        employeeService.saveEmployee(employee);
-        System.out.println("Employee Saved Successfully");
+    @PostMapping("/")
+    public ResponseEntity<String> saveEmployee(@RequestBody Employee employee){
+        Employee newEmployee = employeeService.saveEmployee(employee);
+        LOGGER.info("Employee Saved Successfully");
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{employeeId}").
+                buildAndExpand(newEmployee.getId()).toUri()).
+                body(String.format("Employee %s saved successfully",newEmployee.getName()));
     }
 
-    @DeleteMapping("/api/employees/{employeeId}")
+    @DeleteMapping("/{employeeId}")
     public void deleteEmployee(@PathVariable(name="employeeId")Long employeeId){
         employeeService.deleteEmployee(employeeId);
-        System.out.println("Employee Deleted Successfully");
+        LOGGER.info("Employee Deleted Successfully");
     }
 
-    @PutMapping("/api/employees/{employeeId}")
+    @PutMapping("/{employeeId}")
     public void updateEmployee(@RequestBody Employee employee,
                                @PathVariable(name="employeeId")Long employeeId){
         Employee emp = employeeService.getEmployee(employeeId);
