@@ -16,7 +16,7 @@ import static com.jayway.restassured.http.ContentType.JSON;
 public class EmployeeRestControllerTest extends CommonTestConfigBeans {
 
     @Test
-    public void testEmployeeCrud(){
+    public void testEmployeeCrud() {
         Employee employee = new Employee();
         employee.setDepartment("IT");
         employee.setName("Noushath");
@@ -48,13 +48,19 @@ public class EmployeeRestControllerTest extends CommonTestConfigBeans {
                 contentType(JSON).body(employee)
                 .log().all()
                 .expect().statusCode(HttpStatus.OK.value()).log().all()
-                .when().put("/api/employees/{employeeId}/",employee.getId()).asString();
+                .when().put("/api/employees/{employeeId}/", employee.getId()).asString();
         //delete
         RestAssured.given().auth().none().
                 contentType(JSON)
                 .log().all()
                 .expect().statusCode(HttpStatus.OK.value()).log().all()
-                .when().delete("/api/employees/{employeeId}/",employee.getId()).asString();
+                .when().delete("/api/employees/{employeeId}/", employee.getId()).asString();
+        //update non existent
+        RestAssured.given().auth().none().
+                contentType(JSON).body(employee)
+                .log().all()
+                .expect().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value()).log().all()
+                .when().put("/api/employees/{employeeId}/", employee.getId()).asString();
 
     }
 }

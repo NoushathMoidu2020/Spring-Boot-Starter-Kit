@@ -25,30 +25,30 @@ public class EmployeeRestController {
     }
 
     @GetMapping("/{employeeId}")
-    public Employee getEmployee(@PathVariable(name="employeeId")Long employeeId) {
+    public Employee getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
         return employeeService.getEmployee(employeeId);
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> saveEmployee(@RequestBody Employee employee){
+    public ResponseEntity<String> saveEmployee(@RequestBody Employee employee) {
         Employee newEmployee = employeeService.saveEmployee(employee);
         LOGGER.info("Employee Saved Successfully");
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{employeeId}").
                 buildAndExpand(newEmployee.getId()).toUri()).
-                body(String.format("Employee %s saved successfully",newEmployee.getName()));
+                body(String.format("Employee %s saved successfully", newEmployee.getName()));
     }
 
     @DeleteMapping("/{employeeId}")
-    public void deleteEmployee(@PathVariable(name="employeeId")Long employeeId){
+    public void deleteEmployee(@PathVariable(name = "employeeId") Long employeeId) {
         employeeService.deleteEmployee(employeeId);
         LOGGER.info("Employee Deleted Successfully");
     }
 
     @PutMapping("/{employeeId}")
     public void updateEmployee(@RequestBody Employee employee,
-                               @PathVariable(name="employeeId")Long employeeId){
+                               @PathVariable(name = "employeeId") Long employeeId) {
         Employee emp = employeeService.getEmployee(employeeId);
-        if(emp != null){
+        if (emp != null) {
             employeeService.updateEmployee(employee);
         }
 
