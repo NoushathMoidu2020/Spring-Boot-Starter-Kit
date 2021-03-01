@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:H2DB
+    url: jdbc:h2:file:~/H2DB
     username: sa
     password: 123
     driver-class-name: org.h2.Driver

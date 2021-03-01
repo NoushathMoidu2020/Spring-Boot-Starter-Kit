@@ -1,29 +1,23 @@
-package com.in.nan.entity;
+package com.in.nan.dto;
 
+import com.in.nan.entity.Employee;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.*;
+public class EmployeeDto {
 
-@Entity
-@Table(name = "EMPLOYEE")
-public class Employee {
-
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(hidden = true)
     private Long id;
 
-    @Column(name = "EMPLOYEE_NAME")
+
     private String name;
 
-    @Column(name = "EMPLOYEE_SALARY")
+
     private Integer salary;
 
-    @Column(name = "DEPARTMENT")
+
     private String department;
 
-    @Column(name = "PROFILE_PIC_PATH")
+
     @ApiModelProperty(hidden = true)
     private String profilePicPath;
 
@@ -65,5 +59,15 @@ public class Employee {
 
     public void setProfilePicPath(String profilePicPath) {
         this.profilePicPath = profilePicPath;
+    }
+
+    public Employee employeeEntityBulder() {
+        Employee employee = new Employee();
+        employee.setId(this.id);
+        employee.setName(this.name);
+        employee.setDepartment(this.department);
+        employee.setSalary(this.salary);
+        employee.setProfilePicPath(this.profilePicPath);
+        return employee;
     }
 }

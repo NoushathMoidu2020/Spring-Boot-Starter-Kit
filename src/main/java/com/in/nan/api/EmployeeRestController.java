@@ -1,5 +1,6 @@
 package com.in.nan.api;
 
+import com.in.nan.dto.EmployeeDto;
 import com.in.nan.entity.Employee;
 import com.in.nan.service.EmployeeService;
 import org.slf4j.Logger;
@@ -8,8 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -21,8 +28,7 @@ public class EmployeeRestController {
 
     @GetMapping("/")
     public List<Employee> getEmployees() {
-        List<Employee> employees = employeeService.retrieveEmployees();
-        return employees;
+        return employeeService.retrieveEmployees();
     }
 
     @GetMapping("/{employeeId}")
@@ -31,8 +37,15 @@ public class EmployeeRestController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> saveEmployee(@RequestBody Employee employee) {
-        Employee newEmployee = employeeService.saveEmployee(employee);
+    public ResponseEntity<String> saveEmployee(@RequestParam(name = "profilePic", required = true) MultipartFile profilePic,
+                                               @Valid EmployeeDto employee) throws IOException {
+        String profilePicPath = profilePic.getOriginalFilename() + "_" + System.currentTimeMillis();
+        employee.setProfilePicPath(profilePicPath);
+        try (OutputStream outputStream = Files.newOutputStream(
+                Paths.get(Paths.get("").toAbsolutePath().toString(), profilePic.getOriginalFilename() + "_" + System.currentTimeMillis()))) {
+            outputStream.write(profilePic.getBytes());
+        }
+        Employee newEmployee = employeeService.saveEmployee(employee.employeeEntityBulder());
         LOGGER.info("Employee Saved Successfully");
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{employeeId}").
                 buildAndExpand(newEmployee.getId()).toUri()).
@@ -46,11 +59,10 @@ public class EmployeeRestController {
     }
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<String> updateEmployee(@RequestBody Employee employee,
+    public ResponseEntity<String> updateEmployee(@RequestBody EmployeeDto employee,
                                                  @PathVariable(name = "employeeId") Long employeeId) {
-        Employee emp = employeeService.getEmployee(employeeId);
-        if (emp != null) {
-            employeeService.updateEmployee(employee);
+        if (employeeService.getEmployee(employeeId) != null) {
+            employeeService.updateEmployee(employee.employeeEntityBulder());
             return new ResponseEntity<>("Employee updated successfully", HttpStatus.OK);
         }
 

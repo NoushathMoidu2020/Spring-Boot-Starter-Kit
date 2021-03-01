@@ -1,6 +1,6 @@
 package com.in.nan.common.config;
 
-import com.in.nan.SpringBootStarterApplicationTest;
+import com.in.nan.SpringBootStarterApp;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -15,7 +15,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@SpringBootTest(classes = SpringBootStarterApplicationTest.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = SpringBootStarterApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = BEFORE_CLASS)
 @AutoConfigureTestDatabase(replace = ANY)
 @ActiveProfiles(profiles = "test")

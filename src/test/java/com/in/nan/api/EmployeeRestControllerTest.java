@@ -9,6 +9,11 @@ import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.jayway.restassured.http.ContentType.JSON;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,9 +27,14 @@ public class EmployeeRestControllerTest extends CommonTestConfigBeans {
         employee.setName("Noushath");
         employee.setSalary(1000);
         // create
-        RestAssured.given().auth().none().
-                contentType(JSON)
-                .body(employee)
+        Map formParams = new HashMap();
+        formParams.put("name", employee.getName());
+        formParams.put("department", employee.getDepartment());
+        formParams.put("salary", employee.getSalary());
+        RestAssured.given().auth().none()
+                .multiPart("profilePic",
+                        new File(Paths.get("", "src", "test", "resources", "profile.png").toAbsolutePath().toString()))
+                .formParams(formParams)
                 .log().all()
                 .expect().statusCode(HttpStatus.CREATED.value()).log().all()
                 .when().post("/api/employees/").asString();

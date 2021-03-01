@@ -6,8 +6,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
 @ActiveProfiles("test")
-public class SpringBootStarterApplicationTest {
+public class SpringBootStarterApp {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootStarterApplicationTest.class);
+        SpringApplication.run(SpringBootStarterApp.class);
     }
 }
