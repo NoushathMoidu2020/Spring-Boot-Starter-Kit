@@ -28,7 +28,7 @@ public class EmployeeServiceImplTest {
         List<Employee> employeeList = new ArrayList<Employee>();
         Employee employee = new Employee();
         employee.setDepartment("IT");
-        employee.setName("Noushath");
+        employee.setName("NoushathTester");
         employee.setSalary(1000);
         employeeList.add(employee);
         Mockito.when(employeeRepository.findAll()).thenReturn(employeeList);
