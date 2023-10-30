@@ -38,6 +38,6 @@ public class EmployeeRestControllerMockMVCTest {
         employees.add(employee);
         Mockito.when(employeeService.retrieveEmployees()).thenReturn(employees);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/employees/")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("[{\"id\":null,\"name\":\"Noushath\",\"salary\":1000,\"department\":\"IT\",\"profilePicPath\":null}]")));
+                .andExpect(content().json("[{\"id\":null,\"name\":\"Noushath\",\"salary\":1000,\"department\":\"IT\",\"profilePicPath\":null}]"));
     }
 }
